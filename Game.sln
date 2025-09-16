@@ -8,6 +8,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Constants", "Constants\Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{475B9BC9-C135-4D3D-A561-B009BBB231BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectLayerModule", "ObjectLayerModule\ObjectLayerModule.csproj", "{13CFDE8D-5F5C-4B67-BCFE-7CEB24E5A24D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL.Core", "DAL.Core\DAL.Core.csproj", "{D6565A9E-F2E4-4FBF-AABB-6F46DB59E084}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{11E64882-2B3F-45A5-8A40-78E85F564DC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +36,17 @@ Global
 		{475B9BC9-C135-4D3D-A561-B009BBB231BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{475B9BC9-C135-4D3D-A561-B009BBB231BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{475B9BC9-C135-4D3D-A561-B009BBB231BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13CFDE8D-5F5C-4B67-BCFE-7CEB24E5A24D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13CFDE8D-5F5C-4B67-BCFE-7CEB24E5A24D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13CFDE8D-5F5C-4B67-BCFE-7CEB24E5A24D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13CFDE8D-5F5C-4B67-BCFE-7CEB24E5A24D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6565A9E-F2E4-4FBF-AABB-6F46DB59E084}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6565A9E-F2E4-4FBF-AABB-6F46DB59E084}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6565A9E-F2E4-4FBF-AABB-6F46DB59E084}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6565A9E-F2E4-4FBF-AABB-6F46DB59E084}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11E64882-2B3F-45A5-8A40-78E85F564DC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11E64882-2B3F-45A5-8A40-78E85F564DC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11E64882-2B3F-45A5-8A40-78E85F564DC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11E64882-2B3F-45A5-8A40-78E85F564DC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
