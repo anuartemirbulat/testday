@@ -1,14 +1,14 @@
 ﻿using Constants.Enums;
-using TileMapCore.Interfaces;
+using TileMapCore.Abstractions;
 
 namespace TileMapCore.Implementations;
 
-public class TileMap : IGameMap
+public class SurfaceLayer : IMapLayer
 {
     private Tile[] _items;
 
-    public short Width { get; protected set; }
-    public short Height { get; protected set; }
+    public short Width { get; set; }
+    public short Height { get; set; }
 
     private int GetIndex(int x, int y)
     {
@@ -53,6 +53,8 @@ public class TileMap : IGameMap
 
         foreach (var tile in tiles)
         {
+            if (!IsCoordinateValid(tile.X, tile.Y))
+                continue;
             int index = GetIndex(tile.X, tile.Y);
             _items[index] = tile;
         }
@@ -72,12 +74,9 @@ public class TileMap : IGameMap
 
         for (var y = actualStartY; y <= actualEndY; y++)
         {
-            var rowStartIndex = GetIndex(actualStartX, y);
-            var rowLength = actualEndX - actualStartX + 1;
-
-            for (var i = 0; i < rowLength; i++)
+            for (int x = actualStartX; x <= actualEndX; x++)
             {
-                _items[rowStartIndex + i].Type = tileType;
+                _items[GetIndex(x, y)].Type = tileType;
             }
         }
     }
