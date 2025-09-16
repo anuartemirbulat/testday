@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapServer", "MapServer\MapServer.csproj", "{1446A5AC-6DDE-4EC6-93C7-09A5E55C2F8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TileMapCore", "TileMapCore\TileMapCore.csproj", "{C68C870C-2D17-4B5A-B35C-8BC8556149E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Constants", "Constants\Constants.csproj", "{C3E35FFE-924D-427D-90EA-9DA2956B14A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{475B9BC9-C135-4D3D-A561-B009BBB231BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1446A5AC-6DDE-4EC6-93C7-09A5E55C2F8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1446A5AC-6DDE-4EC6-93C7-09A5E55C2F8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1446A5AC-6DDE-4EC6-93C7-09A5E55C2F8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1446A5AC-6DDE-4EC6-93C7-09A5E55C2F8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C68C870C-2D17-4B5A-B35C-8BC8556149E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C68C870C-2D17-4B5A-B35C-8BC8556149E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C68C870C-2D17-4B5A-B35C-8BC8556149E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C68C870C-2D17-4B5A-B35C-8BC8556149E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E35FFE-924D-427D-90EA-9DA2956B14A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E35FFE-924D-427D-90EA-9DA2956B14A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E35FFE-924D-427D-90EA-9DA2956B14A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E35FFE-924D-427D-90EA-9DA2956B14A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{475B9BC9-C135-4D3D-A561-B009BBB231BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{475B9BC9-C135-4D3D-A561-B009BBB231BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{475B9BC9-C135-4D3D-A561-B009BBB231BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{475B9BC9-C135-4D3D-A561-B009BBB231BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
