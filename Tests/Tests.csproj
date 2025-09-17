@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ObjectLayerModule\ObjectLayerModule.csproj" />
+      <ProjectReference Include="..\RegionModule\RegionModule.csproj" />
       <ProjectReference Include="..\TileMapCore\TileMapCore.csproj" />
     </ItemGroup>
 
