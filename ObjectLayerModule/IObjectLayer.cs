@@ -9,5 +9,6 @@ public interface IObjectLayer
     bool IsObjectInArea(MapObject obj, int areaX1, int areaY1, int areaX2, int areaY2);
     IEnumerable<MapObject> GetObjectsByArea(int x1, int x2, int y1, int y2);
 
-    //void Subscribe(Action<ObjectEvent> handler);
+    public event Action<MapObject>? ObjectAdded;
+    public event Action<int>? ObjectRemoved;
 }

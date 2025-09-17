@@ -6,5 +6,6 @@ public enum PacketType : byte
     GetObjectsInAreaResponse = 2,
     GetRegionsInArea = 3,
     GetRegionsInAreaResponse = 4,
-    ObjectEvent = 5
+    ObjectEvent = 5,
+    AddObject=6
 }

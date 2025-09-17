@@ -23,6 +23,27 @@ public class GameMapServer : INetEventListener
         _regionLayer = regionLayer;
         _server = new NetManager(this);
         _server.Start(9050);
+
+        _objectLayer.ObjectAdded += obj =>
+        {
+            Console.WriteLine($"Object added: ID={obj.Id}");
+            var dto = new MapObjectDto
+            {
+                Id = obj.Id,
+                X = obj.X,
+                Y = obj.Y,
+                Width = obj.Width,
+                Height = obj.Height
+            };
+
+            Broadcast(PacketType.ObjectEvent, dto);
+        };
+
+        _objectLayer.ObjectRemoved += id =>
+        {
+            Console.WriteLine($"Object removed: ID={id}");
+            Broadcast(PacketType.ObjectEvent, id);
+        };
     }
 
     public void PollEvents() => _server.PollEvents();
@@ -46,7 +67,7 @@ public class GameMapServer : INetEventListener
     {
         throw new NotImplementedException();
     }
-    
+
 
     public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader,
         UnconnectedMessageType messageType)
@@ -57,6 +78,9 @@ public class GameMapServer : INetEventListener
     public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber,
         DeliveryMethod deliveryMethod)
     {
+        var obj = new MapObject { X = 1, Y = 1, Width = 1, Height = 1 };
+        _objectLayer.AddAsync(obj);
+
         var data = reader.GetRemainingBytes();
         reader.Recycle();
 
@@ -94,6 +118,23 @@ public class GameMapServer : INetEventListener
         Buffer.BlockCopy(data, 0, packet, 1, data.Length);
         peer.Send(packet, DeliveryMethod.ReliableOrdered);
     }
+
+    private void Broadcast<T>(PacketType type, T payload)
+    {
+        var data = MemoryPackSerializer.Serialize(payload);
+        var packet = new byte[data.Length + 1];
+        packet[0] = (byte)type;
+        Buffer.BlockCopy(data, 0, packet, 1, data.Length);
+
+        lock (_clients)
+        {
+            foreach (var client in _clients)
+            {
+                client.Send(packet, DeliveryMethod.ReliableOrdered);
+            }
+        }
+    }
+
 
     public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
     {

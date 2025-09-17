@@ -8,6 +8,8 @@ public class ObjectLayer : IObjectLayer
 {
     private readonly IConnectionMultiplexer _connectionMultiplexer;
     private const string GeoKey = "objects_geo";
+    public event Action<MapObject>? ObjectAdded;
+    public event Action<int>? ObjectRemoved;
 
     public ObjectLayer(IConnectionMultiplexer connectionMultiplexer)
     {
@@ -33,8 +35,6 @@ public class ObjectLayer : IObjectLayer
             obj.Latitude = obj.Y.ConverToGraduce();
 
             var id = rep.Insert(obj, GeoKey);
-
-            Console.WriteLine($"Seeded: ID={id}, X={obj.X}, Y={obj.Y}, Lon={obj.Longitude}, Lat={obj.Latitude}");
         }
     }
 
@@ -44,6 +44,9 @@ public class ObjectLayer : IObjectLayer
         mapObject.Longitude = mapObject.X.ConverToGraduce();
         mapObject.Latitude = mapObject.Y.ConverToGraduce();
         var res = await rep.InsertAsync(mapObject, GeoKey);
+
+        ObjectAdded?.Invoke(mapObject);
+
         return res;
     }
 
@@ -58,6 +61,10 @@ public class ObjectLayer : IObjectLayer
     {
         var rep = new RedisRepository<MapObject>(_connectionMultiplexer);
         var res = await rep.RemoveAsync(id, GeoKey);
+
+        if (res)
+            ObjectRemoved?.Invoke(id);
+
         return res;
     }
 
@@ -150,5 +157,4 @@ public class ObjectLayer : IObjectLayer
 
         return result;
     }
-
 }

@@ -18,7 +18,14 @@ class Program : INetEventListener
         var listener = new Program();
         listener._client = new NetManager(listener);
         listener._client.Start();
-        listener._client.Connect("mapserver", 9050, Key.MapKey);
+        
+#if DEBUG
+        string serverHost = "localhost";
+#else
+string serverHost = "mapserver";
+#endif
+
+        listener._client.Connect(serverHost, 9050, Key.MapKey);
 
         Console.WriteLine("Connecting to server...");
         while (listener._server == null)
@@ -34,7 +41,7 @@ class Program : INetEventListener
         packet[0] = (byte)PacketType.GetObjectsInArea;
         Buffer.BlockCopy(data, 0, packet, 1, data.Length);
         listener._server.Send(packet, DeliveryMethod.ReliableOrdered);
-        
+
         Console.WriteLine("Запрос регионов по области...");
         var regionRequest = new GetRegionsInAreaRequest { X1 = 10, Y1 = 10, X2 = 50, Y2 = 50 };
         var regionData = MemoryPackSerializer.Serialize(regionRequest);
@@ -43,7 +50,6 @@ class Program : INetEventListener
         Buffer.BlockCopy(regionData, 0, regionPacket, 1, regionData.Length);
         listener._server.Send(regionPacket, DeliveryMethod.ReliableOrdered);
 
-        
 
         while (true)
         {
@@ -58,7 +64,8 @@ class Program : INetEventListener
         Console.WriteLine("Connected to server.");
     }
 
-    public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber, DeliveryMethod deliveryMethod)
+    public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, byte channelNumber,
+        DeliveryMethod deliveryMethod)
     {
         var data = reader.GetRemainingBytes();
         reader.Recycle();
@@ -75,8 +82,9 @@ class Program : INetEventListener
                 {
                     Console.WriteLine($"ID: {obj.Id}, Size: {obj.Width}x{obj.Height} , x:{obj.X} , y:{obj.Y}");
                 }
+
                 break;
-            
+
             case PacketType.GetRegionsInAreaResponse:
             {
                 var responseRegion = MemoryPackSerializer.Deserialize<GetRegionsInAreaResponse>(payload);
@@ -85,23 +93,35 @@ class Program : INetEventListener
                 {
                     Console.WriteLine($"Region: {region.Name} , Id={region.Id}");
                 }
+
                 break;
             }
 
+            case PacketType.ObjectEvent:
+            {
+                var json = MemoryPackSerializer.Deserialize<MapObjectDto>(payload);
+                Console.WriteLine(
+                    $"Добавился новый объект: Id={json.Id},x={json.X}, y={json.Y}, width={json.Width}, height={json.Height}");
+                break;
+            }
         }
     }
 
     public void OnConnectionRequest(ConnectionRequest request) => request.AcceptIfKey(Key.MapKey);
     public void OnPeerDisconnected(NetPeer peer, DisconnectInfo info) => Console.WriteLine("Disconnected.");
+
     public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
     {
         throw new NotImplementedException();
     }
 
-    public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
+    public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader,
+        UnconnectedMessageType messageType)
     {
         throw new NotImplementedException();
     }
 
-    public void OnNetworkLatencyUpdate(NetPeer peer, int latency) { }
+    public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
+    {
+    }
 }
