@@ -11,3 +11,9 @@
       context: .
       dockerfile: MapServer/Dockerfile
 
+  mapclient:
+    image: mapclient
+    build:
+      context: .
+      dockerfile: MapClient/Dockerfile
+

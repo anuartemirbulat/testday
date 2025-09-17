@@ -18,7 +18,7 @@ class Program : INetEventListener
         var listener = new Program();
         listener._client = new NetManager(listener);
         listener._client.Start();
-        listener._client.Connect("127.0.0.1", 9050, Key.MapKey);
+        listener._client.Connect("mapserver", 9050, Key.MapKey);
 
         Console.WriteLine("Connecting to server...");
         while (listener._server == null)
