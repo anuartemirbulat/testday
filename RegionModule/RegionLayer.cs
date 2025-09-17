@@ -1,6 +1,6 @@
 ﻿namespace RegionModule;
 
-public class RegionLayer
+public class RegionLayer : IRegionLayer
 {
     private readonly Region[] _regions;
     private readonly ushort[,] _regionMap;
@@ -9,6 +9,9 @@ public class RegionLayer
     private readonly int _mapHeight;
     private readonly int _regionWidth;
     private readonly int _regionHeight;
+    public RegionLayer():this(100,100,20,20)
+    {
+    }
 
     public RegionLayer(int mapWidth, int mapHeight, int regionWidth, int regionHeight)
     {

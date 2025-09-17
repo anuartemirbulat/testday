@@ -5,9 +5,24 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>dotnet-MapServer-386719b7-4e3f-4eca-a0c8-edd41dfddd03</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="LiteNetLib" Version="1.3.1" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DataContracts\DataContracts.csproj" />
+      <ProjectReference Include="..\ObjectLayerModule\ObjectLayerModule.csproj" />
+      <ProjectReference Include="..\RegionModule\RegionModule.csproj" />
+      <ProjectReference Include="..\TileMapCore\TileMapCore.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 </Project>

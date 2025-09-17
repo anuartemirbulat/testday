@@ -12,6 +12,30 @@ public class ObjectLayer : IObjectLayer
     public ObjectLayer(IConnectionMultiplexer connectionMultiplexer)
     {
         _connectionMultiplexer = connectionMultiplexer;
+        this.SeedObjectsAsync(5);
+    }
+
+    private void SeedObjectsAsync(int count)
+    {
+        var rep = new RedisRepository<MapObject>(_connectionMultiplexer);
+
+        for (int i = 0; i < count; i++)
+        {
+            var obj = new MapObject
+            {
+                X = 10 + i * 10,
+                Y = 10 + i * 5,
+                Width = 5,
+                Height = 5
+            };
+
+            obj.Longitude = obj.X.ConverToGraduce();
+            obj.Latitude = obj.Y.ConverToGraduce();
+
+            var id = rep.Insert(obj, GeoKey);
+
+            Console.WriteLine($"Seeded: ID={id}, X={obj.X}, Y={obj.Y}, Lon={obj.Longitude}, Lat={obj.Latitude}");
+        }
     }
 
     public async Task<long> AddAsync(MapObject mapObject)
@@ -40,12 +64,20 @@ public class ObjectLayer : IObjectLayer
     public async Task<MapObject> GetByPosition(int x, int y)
     {
         var rep = new RedisRepository<MapObject>(_connectionMultiplexer);
-        var results = await rep.GeoRadiusAsync(GeoKey, x.ConverToGraduce(), y.ConverToGraduce(),
-            NumberExtension.ScaleFactor);
 
-        foreach (var redisValue in results)
+        var lon = x.ConverToGraduce();
+        var lat = y.ConverToGraduce();
+        var radius = NumberExtension.ScaleFactor;
+
+        var raw = await rep.GeoSearchAsync(GeoKey, lon, lat, radius);
+        var items = (RedisResult[])raw!;
+
+        foreach (var item in items)
         {
-            if (int.TryParse(redisValue.ToString(), out int objectId))
+            var values = (RedisResult[])item;
+            var member = values[0].ToString();
+
+            if (int.TryParse(member, out int objectId))
             {
                 var obj = await rep.GetByIdAsync(objectId);
                 if (obj == null)
@@ -81,7 +113,7 @@ public class ObjectLayer : IObjectLayer
     }
 
 
-    public async Task<IEnumerable<MapObject>> GetObjectsByArea(int x1, int x2, int y1, int y2)
+    public IEnumerable<MapObject> GetObjectsByArea(int x1, int x2, int y1, int y2)
     {
         var rep = new RedisRepository<MapObject>(_connectionMultiplexer);
 
@@ -98,19 +130,17 @@ public class ObjectLayer : IObjectLayer
         double centerLon = (lon1 + lon2) / 2;
         double centerLat = (lat1 + lat2) / 2;
 
-        double radius = Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2)) / 2.0 * NumberExtension.ScaleFactor;
+        double radius = 0.05;
 
-        var nearbyIds = await rep.GeoRadiusAsync(GeoKey, centerLon, centerLat, radius);
-
-            
+        var geoResults = rep.GeoRadius(GeoKey, centerLon, centerLat, radius);
         var result = new List<MapObject>();
 
-        foreach (var redisValue in nearbyIds)
+        foreach (var geo in geoResults)
         {
-            if (!int.TryParse(redisValue.ToString(), out int objectId))
+            if (!int.TryParse(geo.Member, out int objectId))
                 continue;
 
-            var obj = await rep.GetByIdAsync(objectId);
+            var obj = rep.GetById(objectId);
             if (obj == null)
                 continue;
 
@@ -120,4 +150,5 @@ public class ObjectLayer : IObjectLayer
 
         return result;
     }
+
 }
